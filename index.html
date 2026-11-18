@@ -2,9 +2,8 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=resizes-content"/>
   <title>Gemini Mobile Client</title>
-  
   <!-- Marked.js для парсинга Markdown -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <!-- Highlight.js для подсветки синтаксиса кода -->
@@ -788,13 +787,20 @@
 
     /* Затемнение фона для мобильного меню */
     .sidebar-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      z-index: 90;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.32s ease, visibility 0.32s;
+    z-index: 90;
     }
-
+.sidebar-overlay.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
     /* Адаптивность */
     @media (max-width: 768px) {
       .sidebar {
@@ -811,10 +817,7 @@
       }
       .sidebar.open {
         transform: translateX(0) !important;
-      }
-      .sidebar-overlay.open {
-        display: block;
-      }
+      
       .mobile-menu-btn {
         display: flex;
       }
@@ -1861,6 +1864,16 @@
 
     // Запуск приложения
     init();
-  </script>
+  const inputEl = document.querySelector('textarea, input[type="text"]');
+const chatContainer = document.querySelector('#chatMessages, .chat-messages, #messages');
+if (inputEl && chatContainer) {
+    inputEl.addEventListener('focus', () => {
+        setTimeout(() => {
+            chatContainer.scrollTo({ top: chatContainer.scrollHeight, behavior: 'smooth' });
+        }, 220);
+    });
+}
+
+</script>
 </body>
 </html>
